@@ -1,0 +1,43 @@
+version: '3.5'
+
+services:
+  postgres:
+    container_name: mypostgres
+    image: postgres:9.6-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: changeme
+      POSTGRES_HOST_AUTH_METHOD: trust
+      PGDATA: ~/Documents/programming/mypostgres
+    volumes:
+      - $HOME/projects/docker/postgres_db/db_data:/data/postgres
+    ports:
+      - 5432:5432
+    networks:
+      - postgres
+    restart: unless-stopped
+
+  pgadmin:
+    container_name: mypgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: admin
+    volumes:
+      - $HOME/projects/docker/postgres_db/pgadmin:/root/.pgadmin
+    ports:
+      - 8001:80
+    networks:
+      - postgres
+    restart: unless-stopped
+
+networks:
+  postgres:
+    driver: bridge
+
+volumes:
+    postgres:
+    pgadmin:
+
+# docker exec -it postgres psql --dbname=credentials --username=root --command="SHOW config_file"
+# /var/lib/postgresql/data/postgresql.conf

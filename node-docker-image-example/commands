@@ -1,0 +1,7 @@
+$ docker build . -t uzrnem
+$ docker run -d -p 8080:8080 --name rest-server uzrnem
+# RUN npm ci --only=production && npm cache clean --force
+
+docker save myusername/myproject:latest | gzip -c > myproject_img_bak20141103.tgz
+
+gunzip -c myproject_img_bak20141103.tgz | docker load
