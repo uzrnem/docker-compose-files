@@ -1,0 +1,16 @@
+#docker-compose up --build
+version: '3.7'
+
+services:
+  congo:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    container_name: javaenv
+    expose:
+      - "9040"
+    volumes:
+      - $HOME/uzrnem/docker-compose-files/java-docker-image-example/programs:/programs
+    restart: unless-stopped
+    ports:
+      - "9040:9040"
