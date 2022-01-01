@@ -1,0 +1,15 @@
+#docker-compose up --build
+version: '3.7'
+
+services:
+  go:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    container_name: go
+    expose:
+      - "9035"
+    volumes:
+      - $HOME/projects/docker-compose-files/golang-docker-image-example/goenv:/programs
+    ports:
+      - "9035:9035"
