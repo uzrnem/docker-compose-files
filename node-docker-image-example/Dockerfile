@@ -1,22 +1,16 @@
-FROM node:14
-# -alpine3.14
+FROM node:16-alpine3.14
 
 ENV NODE_ENV=production
 
 # Create app directory
 WORKDIR /app
 
-COPY package*.json /app
-
-COPY config.docker.js /app/env.js 
+COPY package.json package.json
 
 RUN npm install
-# If you are building your code for production
-# RUN npm ci --only=production
 
-# Bundle app source
-COPY . /app
+COPY server.js server.js
+
+EXPOSE 9050
 
 CMD [ "node", "server.js" ]
-
-EXPOSE 8080

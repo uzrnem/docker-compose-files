@@ -1,46 +1,43 @@
 #docker-compose -f mysql-phpmyadmin.yml up -d
 version: '3.7'
 
-networks:
-  app-tier:
-    driver: bridge
-
 services:
-  db:
-    image: mysql:latest
+  mysqldb:
+    image: mysql:8.0.27
     container_name: mysql
-    restart: always
+    restart: always #restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: test_db
     ports:
       - "3306:3306"
     expose:
-      # Opens port 3306 on the container
       - "3306"
     volumes:
       #local dir/files: docker dir/files
-      - $HOME/projects/db/mysql_db:/var/lib/mysql
-      - $HOME/projects/db/mysql_db_files:/sql_files
+      - $HOME/uzrnem/db/mysql_db:/var/lib/mysql
+      - $HOME/uzrnem/db/mysql_db_files:/sql_files
     networks:
-      - app-tier
+      - mysql-database
 
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin:latest
+    image: phpmyadmin/phpmyadmin:5.1.1
     container_name: mysqladmin
     links:
-      - db
+      - mysqldb
     environment:
-      PMA_HOST: db
+      PMA_HOST: mysqldb
       PMA_PORT: 3306
       # PMA_ARBITRARY: 1 // IF HOST is required, in case of local mysql and docker php myadmin
       PMA_USER: root
       PMA_PASSWORD: root
-    # restart: always
     ports:
       - "8000:80"
     networks:
-      - app-tier
+      - mysql-database
 
-volumes:
-  db_data: {}
+#volumes: mysqldb_data: {}
+
+networks:
+  mysql-database: # docker-compose-files_mysql-database
+    driver: bridge

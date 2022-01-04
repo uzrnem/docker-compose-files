@@ -1,6 +1,5 @@
 #docker-compose -f mongodb-expressui.yml up -d
-
-version: "3.3"
+version: "3.7"
 
 services:
   mongodb:
@@ -10,11 +9,15 @@ services:
     #  - MONGO_INITDB_ROOT_USERNAME=root
     #  - MONGO_INITDB_ROOT_PASSWORD=pass12345
     volumes:
-      - $HOME/projects/db/mongo_db:/data/db
+      #local dir/files: docker dir/files
+      - $HOME/uzrnem/db/mongo_db:/data/db
+      - $HOME/uzrnem/db/credentials:/credentials
     ports:
       - 27017:27017
     #echo 'db.runCommand("ping").ok' | mongo 10.10.10.60:27017/test --quiet
     restart: always
+    networks:
+      - mongo-database
 
   mongo-express:
     image: mongo-express
@@ -24,13 +27,22 @@ services:
       #- ME_CONFIG_MONGODB_ENABLE_ADMIN=true
       #- ME_CONFIG_MONGODB_ADMINUSERNAME=root
       #- ME_CONFIG_MONGODB_ADMINPASSWORD=pass12345
-      - ME_CONFIG_BASICAUTH_USERNAME=admin
-      - ME_CONFIG_BASICAUTH_PASSWORD=admin123
+      - ME_CONFIG_BASICAUTH_USERNAME=root
+      - ME_CONFIG_BASICAUTH_PASSWORD=root
     volumes:
-      - $HOME/projects/docker/mongo_db
+      - $HOME/uzrnem/db/mongo_db
     depends_on:
       - mongodb
     ports:
       - 8002:8081
     # wget --quiet --tries=3 --spider http://admin:admin123@10.10.10.60:8081 || exit 1
     restart: unless-stopped
+    networks:
+      - mongo-database
+
+volumes:
+  mongodb_data: {}
+
+networks:
+  mongo-database: # docker-compose-files_mongo-database
+    driver: bridge

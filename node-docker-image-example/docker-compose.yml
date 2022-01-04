@@ -1,18 +1,19 @@
-#docker-compose -f mysql-phpmyadmin.yml up -d
+#docker-compose up
 
 version: '3.7'
 services:
-  db:
-    image: uzrnem:latest
+  nodejs:
+    image: nodenv:1.0.0
     container_name: restii
     restart: unless-stopped
     environment:
-      EXP_CONFIG_DATABASE_NAME: test_db
-      EXP_CONFIG_USER_NAME: test_user
-      EXP_CONFIG_PASS_NAME: test_pass
-
+      PORT: 9055
+      EXP_CONFIG_HOST_NAME: db
+    volumes:
+      - $HOME/uzrnem/expense:/var/local
     ports:
-      - "8088:8080"
+      - "9050:9050"
+      - "9055:9055"
     expose:
-      # Opens port 3306 on the container
-      - "8088"
+      - "9050"
+      - "9055"
