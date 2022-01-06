@@ -14,8 +14,9 @@ services:
       - $HOME/uzrnem/db/credentials:/credentials
     ports:
       - 27017:27017
+    networks:
+      - mongo-database
     #echo 'db.runCommand("ping").ok' | mongo 10.10.10.60:27017/test --quiet
-    restart: always
 
   mongo-express:
     image: mongo-express
@@ -31,8 +32,9 @@ services:
       - $HOME/uzrnem/db/mongo_db
     ports:
       - 8002:8081
+    networks:
+      - mongo-database
     # wget --quiet --tries=3 --spider http://admin:admin123@10.10.10.60:8081 || exit 1
-    restart: unless-stopped
 
 networks:
   mongo-database: # docker-compose-files_mongo-database

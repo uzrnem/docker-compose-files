@@ -6,7 +6,6 @@ services:
   mysqldb:
     image: mysql:8.0.27
     container_name: mysql
-    restart: always #restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: root
       # MYSQL_DATABASE: test_db
@@ -16,6 +15,8 @@ services:
       #local dir/files: docker dir/files
       - $HOME/uzrnem/db/mysql_db:/var/lib/mysql
       - $HOME/uzrnem/db/mysql_db_files:/sql_files
+    networks:
+      - mysql-database
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:5.1.1
@@ -28,6 +29,8 @@ services:
       PMA_PASSWORD: root
     ports:
       - "8000:80"
+    networks:
+      - mysql-database
 
 networks:
   mysql-database: # docker-compose-files_mysql-database

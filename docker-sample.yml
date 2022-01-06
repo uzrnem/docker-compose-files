@@ -1,0 +1,26 @@
+#docker-compose -f docker-sample.yml up -d
+version: '3.7'
+
+services:
+  sample:
+    image: fixed_verion:8.0.27-lightOS #not latest
+    container_name: sample
+    restart:
+      - always
+      - unless-stopped
+      - "no"
+      - on-failure
+    environment:
+      SOME_ENV_VARIABLE: value
+    ports:
+      - "3306:3306" #Internal Port : External Port
+    expose:
+      - 3306
+    volumes:
+      - $HOME/my_local_dir:/docker_internal_dir
+    networks:
+      - allow-access-external
+
+networks:
+  allow-access-external: # current-dir-name_allow-access-external
+    driver: bridge

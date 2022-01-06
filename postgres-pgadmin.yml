@@ -13,7 +13,8 @@ services:
       - $HOME/projects/docker/postgres_db/db_data:/data/postgres
     ports:
       - 5432:5432
-    restart: unless-stopped
+    networks:
+      - postgres-database
 
   pgadmin:
     container_name: mypgadmin
@@ -25,10 +26,11 @@ services:
       - $HOME/projects/docker/postgres_db/pgadmin:/root/.pgadmin
     ports:
       - 8001:80
-    restart: unless-stopped
+    networks:
+      - postgres-database
 
 networks:
-  postgres:
+  postgres-database:
     driver: bridge
 
 # docker exec -it postgres psql --dbname=credentials --username=root --command="SHOW config_file"
