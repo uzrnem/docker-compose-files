@@ -1,4 +1,5 @@
 #docker-compose -f mysql-phpmyadmin.yml up -d
+#docker container run -p 3306:3306 --name=mysql -e MYSQL_ROOT_PASSWORD="root" mysql:8.0.27
 version: '3.7'
 
 services:
@@ -8,23 +9,17 @@ services:
     restart: always #restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: test_db
+      # MYSQL_DATABASE: test_db
     ports:
       - "3306:3306"
-    expose:
-      - "3306"
     volumes:
       #local dir/files: docker dir/files
       - $HOME/uzrnem/db/mysql_db:/var/lib/mysql
       - $HOME/uzrnem/db/mysql_db_files:/sql_files
-    networks:
-      - mysql-database
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:5.1.1
     container_name: mysqladmin
-    links:
-      - mysqldb
     environment:
       PMA_HOST: mysqldb
       PMA_PORT: 3306
@@ -33,10 +28,6 @@ services:
       PMA_PASSWORD: root
     ports:
       - "8000:80"
-    networks:
-      - mysql-database
-
-#volumes: mysqldb_data: {}
 
 networks:
   mysql-database: # docker-compose-files_mysql-database

@@ -16,8 +16,6 @@ services:
       - 27017:27017
     #echo 'db.runCommand("ping").ok' | mongo 10.10.10.60:27017/test --quiet
     restart: always
-    networks:
-      - mongo-database
 
   mongo-express:
     image: mongo-express
@@ -31,17 +29,10 @@ services:
       - ME_CONFIG_BASICAUTH_PASSWORD=root
     volumes:
       - $HOME/uzrnem/db/mongo_db
-    depends_on:
-      - mongodb
     ports:
       - 8002:8081
     # wget --quiet --tries=3 --spider http://admin:admin123@10.10.10.60:8081 || exit 1
     restart: unless-stopped
-    networks:
-      - mongo-database
-
-volumes:
-  mongodb_data: {}
 
 networks:
   mongo-database: # docker-compose-files_mongo-database
