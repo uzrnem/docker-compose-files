@@ -1,0 +1,11 @@
+#docker-compose -f node-setup.yml up -d
+version: '3.7'
+
+services:
+  node_environment:
+    image: node:16-alpine3.14
+    container_name: node_setup
+    working_dir: /programs
+    volumes:
+      - $HOME/uzrnem/code/node:/programs
+    command: tail -f /dev/null

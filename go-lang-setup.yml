@@ -1,0 +1,11 @@
+#docker-compose -f go-lang-setup.yml up -d
+version: '3.7'
+
+services:
+  go_environment:
+    image: golang:1.17-alpine
+    container_name: go_setup
+    working_dir: /programs
+    volumes:
+      - $HOME/uzrnem/code/go:/programs
+    command: tail -f /dev/null

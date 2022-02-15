@@ -1,0 +1,11 @@
+#docker-compose -f java-setup.yml up -d
+version: '3.7'
+
+services:
+  java_environment:
+    image: openjdk:16-alpine3.13
+    container_name: java_setup
+    working_dir: /programs
+    volumes:
+      - $HOME/uzrnem/code/java:/programs
+    command: tail -f /dev/null
