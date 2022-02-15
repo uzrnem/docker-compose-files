@@ -1,4 +1,6 @@
 #docker-compose -f go-lang-setup.yml up -d
+#docker container exec go_setup env
+
 version: '3.7'
 
 services:
@@ -9,3 +11,4 @@ services:
     volumes:
       - $HOME/uzrnem/code/go:/programs
     command: tail -f /dev/null
+    env_file: .env-local
