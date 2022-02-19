@@ -1,0 +1,12 @@
+#docker-compose -f node-npm-setup.yml up -d
+version: '3.7'
+
+services:
+  node_environment:
+    image: node:17.5.0-alpine3.15
+    container_name: node_setup
+    working_dir: /programs
+    volumes:
+      - $HOME/uzrnem/code/javascript:/programs
+    command: tail -f /dev/null
+    env_file: .env-local

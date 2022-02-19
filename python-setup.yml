@@ -1,0 +1,11 @@
+version: '3.7'
+
+services:
+  python_environment:
+    image: python:3.9.10-alpine3.15
+    container_name: python_setup
+    working_dir: /programs
+    volumes:
+      - $HOME/uzrnem/code/python:/programs
+    command: tail -f /dev/null
+    env_file: .env-local

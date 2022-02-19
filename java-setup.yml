@@ -3,9 +3,10 @@ version: '3.7'
 
 services:
   java_environment:
-    image: openjdk:16-alpine3.13
+    image: openjdk:16-alpine3.13 #mac openjdk:19-slim
     container_name: java_setup
     working_dir: /programs
     volumes:
       - $HOME/uzrnem/code/java:/programs
     command: tail -f /dev/null
+    env_file: .env-local
