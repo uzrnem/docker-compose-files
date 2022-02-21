@@ -1,4 +1,5 @@
-version: '3.7'
+#docker-compose -f postgres-pgadmin.yml up -d
+version: "3.7"
 
 services:
   postgres:
@@ -8,9 +9,9 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: changeme
       POSTGRES_HOST_AUTH_METHOD: trust
-      PGDATA: ~/Documents/programming/mypostgres
+      #PGDATA: ~/Documents/programming/mypostgres
     volumes:
-      - $HOME/projects/docker/postgres_db/db_data:/data/postgres
+      - $HOME/uzrnem/database/postgres_db:/data/postgres
     ports:
       - 5432:5432
     networks:
@@ -23,7 +24,7 @@ services:
       PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
       PGADMIN_DEFAULT_PASSWORD: admin
     volumes:
-      - $HOME/projects/docker/postgres_db/pgadmin:/root/.pgadmin
+      - $HOME/uzrnem/database/pgadmin:/root/.pgadmin
     ports:
       - 8001:80
     networks:

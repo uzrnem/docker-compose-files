@@ -1,5 +1,5 @@
 #docker-compose -f docker-sample.yml up -d
-version: '3.7'
+version: "3.7"
 
 services:
   sample:
@@ -16,8 +16,11 @@ services:
       - "3306:3306" #Internal Port : External Port
     expose:
       - 3306
+    working_dir: /docker_internal_dir
     volumes:
       - $HOME/my_local_dir:/docker_internal_dir
+    command: tail -f /dev/null
+    env_file: .env-local
     networks:
       - allow-access-external
 

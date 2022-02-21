@@ -1,4 +1,5 @@
-version: '3.7'
+#docker-compose -f python-setup.yml up -d
+version: "3.7"
 
 services:
   python_environment:

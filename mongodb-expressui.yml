@@ -10,8 +10,8 @@ services:
     #  - MONGO_INITDB_ROOT_PASSWORD=pass12345
     volumes:
       #local dir/files: docker dir/files
-      - $HOME/uzrnem/db/mongo_db:/data/db
-      - $HOME/uzrnem/db/credentials:/credentials
+      - $HOME/uzrnem/database/mongo_db:/data/db
+      - $HOME/uzrnem/database/backup:/backup
     ports:
       - 27017:27017
     networks:
@@ -29,7 +29,7 @@ services:
       - ME_CONFIG_BASICAUTH_USERNAME=root
       - ME_CONFIG_BASICAUTH_PASSWORD=root
     volumes:
-      - $HOME/uzrnem/db/mongo_db
+      - $HOME/uzrnem/database/mongo_db
     ports:
       - 8002:8081
     networks:
