@@ -1,12 +1,12 @@
-#docker-compose -f python-setup.yml up -d
+#docker-compose -f python.yml up -d
 version: "3.7"
 
 services:
   python_environment:
     image: python:3.9.10-alpine3.15
-    container_name: python_setup
+    container_name: pythonenv
     working_dir: /programs
     volumes:
-      - $HOME/uzrnem/code/python:/programs
+      - $HOME/uzrnem/programs/python:/programs
     command: tail -f /dev/null
     env_file: .env-local

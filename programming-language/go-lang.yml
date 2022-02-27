@@ -1,13 +1,13 @@
-#docker-compose -f go-lang-setup.yml up -d
+#docker-compose -f go-lang.yml up -d
 #docker container exec go_setup env
 version: '3.7'
 
 services:
   go_environment:
     image: golang:1.17.7-alpine3.15
-    container_name: go_setup
+    container_name: goenv
     working_dir: /programs
     volumes:
-      - $HOME/uzrnem/code/go:/programs
+      - $HOME/uzrnem/programs/go:/programs
     command: tail -f /dev/null
     env_file: .env-local
