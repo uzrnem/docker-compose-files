@@ -16,7 +16,7 @@ services:
       - $HOME/uzrnem/database/mysql_db:/var/lib/mysql
       - $HOME/uzrnem/database/backup:/backup
     networks:
-      - mysql-database
+      - mysql
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:5.1.1
@@ -30,8 +30,8 @@ services:
     ports:
       - 8000:80
     networks:
-      - mysql-database
+      - mysql
 
 networks:
-  mysql-database: # docker-compose-files_mysql-database
+  mysql: # database_mysql
     driver: bridge

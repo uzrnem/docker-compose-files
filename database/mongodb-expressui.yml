@@ -1,9 +1,9 @@
-#docker-compose -f mongodb-expressui.yml up -d
+#docker-compose -f database/mongodb-expressui.yml up -d
 version: "3.7"
 
 services:
   mongodb:
-    image: mongo
+    image: mongo:5.0.6-focal
     container_name: mongodb
     # environment:
     #  - MONGO_INITDB_ROOT_USERNAME=root
@@ -15,11 +15,11 @@ services:
     ports:
       - 27017:27017
     networks:
-      - mongo-database
+      - mongo
     #echo 'db.runCommand("ping").ok' | mongo 10.10.10.60:27017/test --quiet
 
   mongo-express:
-    image: mongo-express
+    image: mongo-express:1.0.0-alpha.4
     container_name: mongo-express
     environment:
       - ME_CONFIG_MONGODB_SERVER=mongodb
@@ -33,9 +33,9 @@ services:
     ports:
       - 8002:8081
     networks:
-      - mongo-database
+      - mongo
     # wget --quiet --tries=3 --spider http://admin:admin123@10.10.10.60:8081 || exit 1
 
 networks:
-  mongo-database: # docker-compose-files_mongo-database
+  mongo: # database_mongo
     driver: bridge
