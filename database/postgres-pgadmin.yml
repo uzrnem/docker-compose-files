@@ -15,7 +15,7 @@ services:
     ports:
       - 5432:5432
     networks:
-      - postgres-database
+      - postgres
 
   pgadmin:
     container_name: mypgadmin
@@ -28,10 +28,10 @@ services:
     ports:
       - 8001:80
     networks:
-      - postgres-database
+      - postgres
 
 networks:
-  postgres-database:
+  postgres: # database_postgres
     driver: bridge
 
 # docker exec -it postgres psql --dbname=credentials --username=root --command="SHOW config_file"
