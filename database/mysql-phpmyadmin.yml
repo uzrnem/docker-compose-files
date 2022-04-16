@@ -4,7 +4,7 @@ version: "3.7"
 
 services:
   mysqldb:
-    image: mysql:8.0.27
+    image: mysql:8.0.28 # mac: mysql:8.0.28-oracle
     container_name: mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -16,7 +16,7 @@ services:
       - $HOME/uzrnem/database/mysql_db:/var/lib/mysql
       - $HOME/uzrnem/database/backup:/backup
     networks:
-      - mysql-database
+      - mysql
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:5.1.1
@@ -30,8 +30,15 @@ services:
     ports:
       - 8000:80
     networks:
-      - mysql-database
+      - mysql
 
 networks:
-  mysql-database: # docker-compose-files_mysql-database
+  mysql: # database_mysql
     driver: bridge
+
+#If you face issue connecting
+# CREATE USER 'USERNAME' IDENTIFIED BY 'password';
+# GRANT ALL PRIVILEGES ON *.* TO 'USERNAME' WITH GRANT OPTION;
+# ALTER USER 'USERNAME' IDENTIFIED WITH mysql_native_password BY 'PASSWORD';
+# FLUSH PRIVILEGES;
+# ***replace USERNAME and PASSWORD only and not password
