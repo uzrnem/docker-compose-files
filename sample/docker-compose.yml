@@ -5,11 +5,7 @@ services:
   sample:
     image: fixed_verion:8.0.27-lightOS #not latest
     container_name: sample
-    restart:
-      - always
-      - unless-stopped
-      - "no"
-      - on-failure
+    restart: always #unless-stopped, no, on-failure
     environment:
       SOME_ENV_VARIABLE: value
     ports:

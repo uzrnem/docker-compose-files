@@ -4,7 +4,7 @@ version: "3.7"
 
 services:
   mysqldb:
-    image: mysql:8.0.28 # mac: mysql:8.0.28-oracle
+    image: mysql:8.0.27 # mac: mysql:8.0.28-oracle
     container_name: mysql
     environment:
       MYSQL_ROOT_PASSWORD: root

@@ -10,4 +10,4 @@ services:
     volumes:
       - $HOME/uzrnem/programs/go:/programs
     command: tail -f /dev/null
-    env_file: .env-local
+    #env_file: ../sample/.env-local
