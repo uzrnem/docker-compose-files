@@ -33,8 +33,11 @@ services:
       - mysql
 
 networks:
-  mysql: # database_mysql
+  mysql: # docker-compose-files_mysql
     driver: bridge
+# networks: -- To use above network services in other projects add this networks property
+#  docker-compose-files_mysql: -- {{directory_name}}_{{network_name}}
+#    external: true -- are you using external network?
 
 #If you face issue connecting
 # CREATE USER 'USERNAME' IDENTIFIED BY 'password';

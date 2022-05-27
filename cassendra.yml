@@ -1,0 +1,50 @@
+#docker-compose -f cassendra.yml up -d
+#https://2much2learn.com/setting-up-cassandra-with-docker/
+version: "3.7"
+
+services:
+  cassandra:
+    container_name: cassandra
+    image: bitnami/cassandra:4.0.4-debian-10-r7
+    ports:
+      - 7000:7000
+      - 9042:9042
+    volumes:
+      - ~/uzrnem/database/cassandra:/bitnami
+    #  - ~/uzrnem/docker-compose-files/sample/cassandra.yaml:/bitnami/cassandra/conf/cassandra.yaml:ro
+    healthcheck:
+      test: [ "CMD", "/opt/bitnami/cassandra/bin/cqlsh", "-u cassandra", "-p cassandra" ,"-e \"describe keyspaces\"" ]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+    environment:
+      - CASSANDRA_SEEDS=cassandra
+      - CASSANDRA_PASSWORD_SEEDER=yes
+      - CASSANDRA_PASSWORD=cassandra
+    networks:
+      - cassandra
+  
+#  cassandra-web:
+#    image: metavige/cassandra-web:latest
+#    depends_on:
+#    - cassandra
+#    environment:
+#      CASSANDRA_HOST: 192.168.0.1
+#      CASSANDRA_PORT: 9042
+#      CASSANDRA_USER: cassandra
+#      CASSANDRA_PASSWORD: cassandra
+#    ports:
+#    - 8003:3000
+#    networks:
+#      - cassandra
+
+networks:
+  cassandra: # docker-compose-files_cassandra
+    driver: bridge
+# networks: -- To use above network services in other projects add this networks property
+#  docker-compose-files_cassandra: -- {{directory_name}}_{{network_name}}
+#    external: true -- are you using external network?
+
+volumes:
+  cassandra_data:
+    driver: local

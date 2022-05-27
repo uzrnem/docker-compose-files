@@ -30,9 +30,20 @@ services:
     networks:
       - postgres
 
+#  dbui:
+#    image: dbeaver/cloudbeaver:22.0.5
+#    container_name: dbeavercss
+#    ports:
+#      - 8004:8978
+#    networks:
+#      - cassandra #cbadmin
+
 networks:
-  postgres: # database_postgres
+  postgres: # docker-compose-files_postgres
     driver: bridge
+# networks: -- To use above network services in other projects add this networks property
+#  docker-compose-files_postgres: -- {{directory_name}}_{{network_name}}
+#    external: true -- are you using external network?
 
 # docker exec -it postgres psql --dbname=credentials --username=root --command="SHOW config_file"
 # /var/lib/postgresql/data/postgresql.conf

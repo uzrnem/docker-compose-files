@@ -37,5 +37,8 @@ services:
     # wget --quiet --tries=3 --spider http://admin:admin123@10.10.10.60:8081 || exit 1
 
 networks:
-  mongo: # database_mongo
+  mongo: # docker-compose-files_mongo
     driver: bridge
+# networks: -- To use above network services in other projects add this networks property
+#  docker-compose-files_mongo: -- {{directory_name}}_{{network_name}}
+#    external: true -- are you using external network?

@@ -1,0 +1,39 @@
+#docker-compose -f redis-commander.yml up -d
+version: "3.7"
+
+services:
+  redis:
+    image: redis:6.2.6-alpine3.15
+    container_name: redis
+    hostname: myredis
+    volumes:
+      - $HOME/uzrnem/database/redis:/data
+    ports:
+      - 6379:6379
+    # command: redis-server --requirepass "" #redis
+    networks:
+      - redis
+
+  redis-commander:
+    container_name: redis-commander
+    #hostname: redis-commander
+    image: rediscommander/redis-commander:latest
+    restart: always
+    environment:
+    - REDIS_HOSTS=local:myredis:6379
+    ports:
+    - 8001:8081
+    networks:
+      - redis
+
+networks:
+  redis: # docker-compose-files_redis
+    driver: bridge
+# networks: -- To use above network services in other projects add this networks property
+#  docker-compose-files_redis: -- {{directory_name}}_{{network_name}}
+#    external: true -- are you using external network?
+
+# SADD myset "Hello", SMEMBERS myset, SREM myset "World"
+# HSET myhash field1 "Hello", HKEYS myhash, HGET myhash field1, HDEL myhash field1
+# SET name "Bhagyesh", GET name
+# KEYS *, TYPE tutori: "none", TYPE myhash: "hash", TYPE myset: "set"
