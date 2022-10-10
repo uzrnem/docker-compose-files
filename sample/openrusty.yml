@@ -1,0 +1,12 @@
+#docker-compose -f openrusty.yml up -d
+version: '3.7'
+
+services:
+  openresty:
+    image: openresty/openresty:1.19.9.1-4-alpine-fat
+    container_name: openresty
+    restart: always
+    volumes:
+      - ~/uzrnem/docker-compose-files/lua:/etc/nginx # /conf.d
+    ports:
+      - "80:8080"

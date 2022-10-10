@@ -29,6 +29,8 @@ services:
       PMA_PASSWORD: root
     ports:
       - 8000:80
+    depends_on:
+      - mysqldb
     networks:
       - mysql
 

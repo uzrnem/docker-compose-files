@@ -18,7 +18,7 @@ services:
     container_name: redis-commander
     #hostname: redis-commander
     image: rediscommander/redis-commander:latest
-    restart: always
+    #restart: always
     environment:
     - REDIS_HOSTS=local:myredis:6379
     ports:

@@ -1,0 +1,14 @@
+#docker-compose -f php.yml up -d
+#docker container exec phpenv env
+version: '3.7'
+
+services:
+  php_environment:
+    image: php:8.0-apache
+    container_name: phpenv
+    working_dir: /programs
+    volumes:
+      - $HOME/uzrnem/programs/php:/programs
+    command: tail -f /dev/null
+    # command: sh -c "docker-php-ext-install mysqli && docker-php-ext-enable mysqli && php -S 0.0.0.0:9035"
+    #php -S localhost:port -t your_folder/
