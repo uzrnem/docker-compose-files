@@ -9,12 +9,12 @@ services:
       - $HOME/uzrnem/database/redis:/data
     network_mode: host
 
-  commanderhost:
-    image: rediscommander/redis-commander:latest
-    container_name: commanderhost
+  redisgui:
+    image: uzrnem/redisgui:latest
+    container_name: redisgui
     environment:
-      REDIS_HOSTS: "local:localhost:6379"
-      PORT: 8001
+      CONFIG_REDIS_URI: redis://localhost:6379
+      PORT: 8003
     network_mode: host
 
   rediscache:
