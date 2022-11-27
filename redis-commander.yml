@@ -1,10 +1,25 @@
-#docker-compose -f redis-commander.yml up -d
+#docker-compose -f redis-commander.yml --profile advance up -d / down
 version: "3.7"
 
 services:
-  redis:
+  redishost:
     image: redis:6.2.6-alpine3.15
-    container_name: redis
+    container_name: redishost
+    volumes:
+      - $HOME/uzrnem/database/redis:/data
+    network_mode: host
+
+  commanderhost:
+    image: rediscommander/redis-commander:latest
+    container_name: commanderhost
+    environment:
+      REDIS_HOSTS: "local:localhost:6379"
+      PORT: 8001
+    network_mode: host
+
+  rediscache:
+    image: redis:6.2.6-alpine3.15
+    container_name: rediscache
     hostname: myredis
     volumes:
       - $HOME/uzrnem/database/redis:/data
@@ -13,11 +28,13 @@ services:
     # command: redis-server --requirepass "" #redis
     networks:
       - redis
+    profiles:
+      - advance
 
-  redis-commander:
-    container_name: redis-commander
-    #hostname: redis-commander
+  cache-commander:
     image: rediscommander/redis-commander:latest
+    container_name: cache-commander
+    #hostname: redis-commander
     #restart: always
     environment:
     - REDIS_HOSTS=local:myredis:6379
@@ -25,6 +42,8 @@ services:
     - 8001:8081
     networks:
       - redis
+    profiles:
+      - advance
 
 networks:
   redis: # docker-compose-files_redis

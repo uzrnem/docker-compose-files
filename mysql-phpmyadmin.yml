@@ -3,28 +3,50 @@
 version: "3.7"
 
 services:
-  mysqldb:
+  mysqlhost:
     image: mysql:8.0.27 # mac: mysql:8.0.28-oracle
     container_name: mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
-      # MYSQL_DATABASE: test_db
+    volumes:
+      - $HOME/uzrnem/database/mysql_db:/var/lib/mysql
+      - $HOME/uzrnem/database/backup:/backup
+    network_mode: host
+
+  adminhost:
+    image: phpmyadmin:5.2.0-apache
+    container_name: phpadmin
+    environment:
+      PMA_HOST: localhost:3306
+      PMA_USER: root
+      PMA_PASSWORD: root
+      APACHE_PORT: 8000
+    network_mode: host
+
+  mysqldb:
+    image: mysql:8.0.27 # mac: mysql:8.0.28-oracle
+    container_name: mysqldb
+    hostname: mysqldb
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test_db
     ports:
       - 3306:3306
     volumes:
-      #local dir/files: docker dir/files
       - $HOME/uzrnem/database/mysql_db:/var/lib/mysql
       - $HOME/uzrnem/database/backup:/backup
     networks:
       - mysql
+    profiles:
+      - advance
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin:5.1.1
-    container_name: mysqladmin
+  dbadmin:
+    image: phpmyadmin:5.2.0-apache
+    container_name: dbadmin
     environment:
-      PMA_HOST: mysqldb
-      PMA_PORT: 3306
-      # PMA_ARBITRARY: 1 // IF HOST is required, in case of local mysql and docker php myadmin
+      PMA_HOST: localhost:3306
+      # PMA_PORT: 3306 #uncomment if mysql is not on host network
+      # PMA_ARBITRARY: 1 //If you want to enter login details manually
       PMA_USER: root
       PMA_PASSWORD: root
     ports:
@@ -33,6 +55,8 @@ services:
       - mysqldb
     networks:
       - mysql
+    profiles:
+      - advance
 
 networks:
   mysql: # docker-compose-files_mysql
