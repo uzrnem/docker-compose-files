@@ -1,20 +1,22 @@
-#docker-compose -f redis-commander.yml --profile advance up -d / down
+#docker-compose -f redis-gui.yml --profile advance up -d / down
 version: "3.7"
 
 services:
-  redishost:
+  redisdb:
     image: redis:6.2.6-alpine3.15
-    container_name: redishost
+    container_name: redisdb
+    command: redis-server --requirepass ${REDIS_PASS}
     volumes:
       - $HOME/uzrnem/database/redis:/data
     network_mode: host
 
   redisgui:
-    image: uzrnem/redisgui:latest
-    container_name: redisgui
+    image: uzrnem/redisgui:0.2.0
+    container_name: ruigui
     environment:
-      CONFIG_REDIS_URI: redis://localhost:6379
-      PORT: 8003
+      #'redis://randomusername:password@redis_host:6380'
+      CONFIG_REDIS_URI: redis://:${REDIS_PASS}@localhost:6379
+      PORT: 8001
     network_mode: host
 
   rediscache:
