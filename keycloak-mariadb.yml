@@ -1,0 +1,48 @@
+#docker-compose -f keycloak-mariadb.yml up -d
+version: "3.7"
+
+services:
+  mariadb:
+    image: mariadb:10.9.4
+    container_name: kcdb
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: keycloak
+      MYSQL_USER: keycloak
+      MYSQL_PASSWORD: password
+      MYSQL_TCP_PORT: 3307
+    volumes:
+      - $HOME/uzrnem/database/maria_db:/var/lib/mysql
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:19.0.3-legacy
+    container_name: kc19
+    environment:
+      DB_VENDOR: mariadb
+      DB_ADDR: mariadb
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_PASSWORD: password
+      DB_PORT: 3307
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      JGROUPS_DISCOVERY_PROTOCOL: JDBC_PING
+    volumes:
+      - ./formsflow-ai-realm.json:/opt/jboss/keycloak/imports/formsflow-ai-realm.json
+    command: "-b 0.0.0.0 -Dkeycloak.import=/opt/jboss/keycloak/imports/formsflow-ai-realm.json -Dkeycloak.migration.strategy=OVERWRITE_EXISTING"
+    depends_on:
+      - mariadb
+    ports:
+      - 8080:8080
+
+  madmin:
+    image: phpmyadmin:5.2.0-apache
+    container_name: kcad
+    environment:
+      PMA_HOST: mariadb:3307
+      PMA_USER: root
+      PMA_PASSWORD: root
+    ports:
+      - 8001:80
+    depends_on:
+      - mariadb

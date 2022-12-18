@@ -11,7 +11,7 @@ services:
     network_mode: host
 
   redisgui:
-    image: uzrnem/redisgui:0.2.0
+    image: uzrnem/redisgui:0.4.1
     container_name: ruigui
     environment:
       #'redis://randomusername:password@redis_host:6380'
