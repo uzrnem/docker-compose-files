@@ -1,0 +1,29 @@
+#docker-compose -f camunda-mariadb.yml up -d
+version: '3.8'
+
+services:
+  mariadb:
+    image: mysql:8.0.27
+    container_name: maria
+    hostname: mariadatabase
+    environment:
+      - MYSQL_ROOT_PASSWORD=camunda
+      - MYSQL_USER=camunda
+      - MYSQL_PASSWORD=camunda
+      - MYSQL_DATABASE=process-engine
+      - MYSQL_TCP_PORT=3307
+
+  camunda-mysql:
+    image: camunda/camunda-bpm-platform:7.19.0-SNAPSHOT
+    container_name: camunda
+    environment:
+      - DB_DRIVER=com.mysql.cj.jdbc.Driver
+      - DB_URL=jdbc:mysql://mariadatabase:3307/process-engine?sendFractionalSeconds=false
+      - DB_USERNAME=camunda
+      - DB_PASSWORD=camunda
+      - WAIT_FOR=maria:3307
+    links:
+      - mariadb
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
