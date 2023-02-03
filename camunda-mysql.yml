@@ -32,7 +32,7 @@ services:
       - mysqlhost
 
   camunda-extention:
-    image: extention:0.0.1-beta
+    image: uzrnem/extention:0.0.1-beta
     container_name: extention
     environment:
       CAMUNDA_WEB_APP_URL: http://localhost:8080
