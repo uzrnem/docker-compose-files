@@ -1,4 +1,4 @@
-#docker-compose -f camunda-mariadb.yml up -d
+#docker-compose -f camunda-drawtul.yml up -d
 version: '3.8'
 
 services:
@@ -21,7 +21,7 @@ services:
     environment:
       CORS_ALLOWED_APP_URL: http://localhost:8082
       CAMUNDA_WEB_APP_PORT: 8080
-      CAMUNDA_JDBC_URL: jdbc:mysql://mysqlhost:3306/camunda
+      CAMUNDA_JDBC_URL: jdbc:mysql://mysqldb:3306/camunda
       CAMUNDA_JDBC_USER: root
       CAMUNDA_JDBC_PASSWORD: root
       CAMUNDA_ADMIN_USER: admin
@@ -29,16 +29,13 @@ services:
     ports:
       - 8080:8080
     depends_on:
-      - mysqlhost
+      - mysqldb
 
-  camunda-extention:
-    image: uzrnem/extention:0.0.1-beta
-    container_name: extention
+  drawtul:
+    image: uzrnem/drawtul:0.0.1-beta
+    container_name: drawtul
     environment:
       CAMUNDA_WEB_APP_URL: http://localhost:8080
-      FORMS_BACKEND_APP_URL: http://localhost:8082
-      #EXTENTION_WEB_APP_PORT: 8083
-      #EXTENTION_WEB_APP_URL: http://localhost:8083
       EXTENTION_BACKEND_APP_PORT: 8082
     ports:
       - 8082:8082
