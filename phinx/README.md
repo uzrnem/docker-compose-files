@@ -2,10 +2,12 @@
 
 #### Supported Adapter
 > MySQL: specify the mysql adapter.
+
 > PostgreSQL: specify the pgsql adapter.
 
 #### Future Adapters
 > SQLite: specify the sqlite adapter.
+
 > SQL Server: specify the sqlsrv adapter.
 
 Please raise MR for this adapter
@@ -16,7 +18,7 @@ version: "3.7"
 
 services:
   phinx:
-    image: phinx:0.1
+    image: uzrnem/phinx:0.1
     container_name: phinx
     volumes:
       - $PWD/db:/phinx/db
@@ -34,7 +36,7 @@ version: "3.7"
 
 services:
   phinx:
-    image: phinx:0.1
+    image: uzrnem/phinx:0.1
     container_name: phinx
     volumes:
       - $PWD/db:/phinx/db
