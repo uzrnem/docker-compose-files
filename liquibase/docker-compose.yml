@@ -28,7 +28,14 @@ services:
   liquibase:
     image: liquibase/liquibase:4.21.1
     container_name: liquibase
-    command: --logLevel=DEBUG --defaults-file=config/liquibase.properties --changelog-file=config/changelog.xml update
+    environment:
+      #INSTALL_MYSQL: true
+      LIQUIBASE_LOG_LEVEL: DEBUG
+      LIQUIBASE_COMMAND_URL: jdbc:postgresql://postgresdb:5432/mydb #?currentSchema="myschema"
+      LIQUIBASE_COMMAND_USERNAME: postgres
+      LIQUIBASE_COMMAND_PASSWORD: changeme
+      LIQUIBASE_COMMAND_DEFAULT_SCHEMA_NAME: public
+    command: --changelog-file=config/changelog.xml update
     # command: --logLevel=DEBUG --defaultsFile=config/liquibase.properties --changeLogFile=config/changelog.xml update
     volumes:
       - ./config:/liquibase/config
