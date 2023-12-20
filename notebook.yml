@@ -1,0 +1,82 @@
+# For Development: docker compose --profile dev up
+# For Development: docker compose --profile test up
+# COMPOSE_PROFILES=frontend,debug docker compose up
+# docker compose --profile dev --profile test up
+version: "3.7"
+
+services:
+  mongodb:
+    image: mongo:5.0.6-focal
+    container_name: mongodb
+    environment:
+     - MONGO_INITDB_ROOT_USERNAME=root
+     - MONGO_INITDB_ROOT_PASSWORD=pass12345
+    volumes:
+      - $PWD/garage/mongo_db:/data/db
+    ports:
+      - 27017:27017
+    networks:
+      - mongo
+    profiles:
+      - dev
+      - test
+
+  mongo-express:
+    image: mongo-express:1.0.0-alpha.4
+    container_name: mongo-express
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+      - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=root
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=pass12345
+      - ME_CONFIG_BASICAUTH_USERNAME=root
+      - ME_CONFIG_BASICAUTH_PASSWORD=root
+    ports:
+      - 8002:8081
+    networks:
+      - mongo
+    profiles:
+      - dev
+      - test
+
+  notebook:
+    image: uzrnem/nottebukk:0.0.1
+    container_name: notebook
+    environment:
+      NT_CONFIG_DATABASE_NAME: dummydb
+      NT_CONFIG_USER_NAME: root
+      NT_CONFIG_PASS_NAME: pass12345
+      NT_CONFIG_HOST_NAME: mongodb
+      NT_CONFIG_PORT_NUMB: 27017
+      SERVER_PORT: 9002
+    ports:
+      - 9002:9002
+    networks:
+      - mongo
+    profiles:
+      - test
+
+  notebook-dev:
+    image: golang:1.21rc2-alpine3.18
+    working_dir: /app
+    container_name: notebook-dev
+    environment:
+      NT_CONFIG_DATABASE_NAME: notebookdb
+      NT_CONFIG_USER_NAME: root
+      NT_CONFIG_PASS_NAME: pass12345
+      NT_CONFIG_HOST_NAME: mongodb
+      NT_CONFIG_PORT_NUMB: 27017
+    volumes:
+      - $PWD:/app
+      - $PWD/garage/modules:/go/pkg/mod
+    command: tail -f /dev/null
+    ports:
+      - 9002:9002
+    networks:
+      - mongo
+    profiles:
+      - dev
+
+networks:
+  mongo:
+    driver: bridge
