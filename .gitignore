@@ -1,1 +1,3 @@
 *.class
+*/vendor
+*/node_modules

@@ -1,9 +1,11 @@
+# docker compose -f docker-desktop-portainer.yml up -d
 version: '3.7'
 
+services:
   portainer:
     image: portainer/portainer-ce:linux-amd64
     container_name: portainer
     ports:
-      - 9000:9000
+      - 7000:9000
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
