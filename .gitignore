@@ -1,3 +1,5 @@
 *.class
 */vendor
 */node_modules
+penpot/penpot_assets
+penpot/postgres

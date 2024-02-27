@@ -1,0 +1,87 @@
+version: "3.8"
+
+networks:
+  penpot:
+
+services:
+  penpot-frontend:
+    image: penpotapp/frontend:1.19.3
+    ports:
+      - 9001:80
+    volumes:
+      - $PWD/penpot_assets:/opt/data/assets
+    depends_on:
+      - penpot-backend
+      - penpot-exporter
+    networks:
+      - penpot
+    labels:
+      - "traefik.enable=true"
+    environment:
+      # - PENPOT_FLAGS=enable-registration enable-login-with-password
+      - PENPOT_FLAGS=enable-insecure-register disable-secure-session-cookies disable-email-verification # disable-login disable-registration
+
+  penpot-backend:
+    image: penpotapp/backend:1.19.3
+    volumes:
+      - $PWD/penpot_assets:/opt/data/assets
+    depends_on:
+      - penpot-postgres
+      - penpot-redis
+    networks:
+      - penpot
+    environment:
+      #- PENPOT_FLAGS=enable-registration enable-login-with-password disable-email-verification enable-smtp enable-prepl-server
+      - PENPOT_FLAGS=enable-insecure-register disable-secure-session-cookies disable-email-verification disable-smtp enable-prepl-server # disable-login disable-registration
+      - PENPOT_PUBLIC_URI=http://localhost:9001
+      - PENPOT_DATABASE_URI=postgresql://penpot-postgres/penpot
+      - PENPOT_DATABASE_USERNAME=penpot
+      - PENPOT_DATABASE_PASSWORD=penpot
+      - PENPOT_REDIS_URI=redis://penpot-redis/0
+      - PENPOT_ASSETS_STORAGE_BACKEND=assets-fs
+      - PENPOT_STORAGE_ASSETS_FS_DIRECTORY=/opt/data/assets
+      - PENPOT_TELEMETRY_ENABLED=true
+      - PENPOT_SMTP_DEFAULT_FROM=no-reply@example.com
+      - PENPOT_SMTP_DEFAULT_REPLY_TO=no-reply@example.com
+      - PENPOT_SMTP_HOST=penpot-mailcatch
+      - PENPOT_SMTP_PORT=1025
+      - PENPOT_SMTP_USERNAME=
+      - PENPOT_SMTP_PASSWORD=
+      - PENPOT_SMTP_TLS=false
+      - PENPOT_SMTP_SSL=false
+
+  penpot-exporter:
+    image: penpotapp/exporter:1.19.3
+    networks:
+      - penpot
+    environment:
+      - PENPOT_PUBLIC_URI=http://penpot-frontend
+      - PENPOT_REDIS_URI=redis://penpot-redis/0
+
+  penpot-postgres:
+    image: postgres:15
+    stop_signal: SIGINT
+    volumes:
+      - $PWD/postgres:/var/lib/postgresql/data
+    networks:
+      - penpot
+    environment:
+      - POSTGRES_INITDB_ARGS=--data-checksums
+      - POSTGRES_DB=penpot
+      - POSTGRES_USER=penpot
+      - POSTGRES_PASSWORD=penpot
+
+  penpot-redis:
+    image: redis:7
+    networks:
+      - penpot
+
+  penpot-mailcatch:
+    image: sj26/mailcatcher:v0.9.0
+    expose:
+      - '1025'
+    ports:
+      - 1080:1080
+      - 1025:1025
+    networks:
+      - penpot
